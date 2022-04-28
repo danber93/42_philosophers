@@ -1,0 +1,6 @@
+{
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1,
+    "editor.fontSize": 15,
+    "editor.renderWhitespace": "all"
+}
