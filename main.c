@@ -6,7 +6,7 @@
 /*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 15:02:17 by dbertill          #+#    #+#             */
-/*   Updated: 2022/04/26 16:25:36 by dbertill         ###   ########.fr       */
+/*   Updated: 2022/05/02 20:01:25 by dbertill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 * The function to be executed by the thread should take a
 * void * parameter and return a void * result .
 */
-void    *thread_function(void *arg)
+void    *thread_function(void *arg, pthread_mutex_t m1)
 {
-	// Cast the parameter into whatever type is appropriate .
+	// Cast the parameter into whatever type is appropriate.
 	int  *incoming = (int*)arg;
-	// Do whatever is necessary using * incoming as the argument
+	
+	// Do whatever is necessary using * incoming as the argument.
 	printf("%i\n", *incoming);
-	// The thread terminates when this function returns .
+	// The thread terminates when this function returns.
 	return (NULL);
 }
 
