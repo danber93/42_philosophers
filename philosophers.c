@@ -6,13 +6,13 @@
 
 typedef struct	s_phil
 {
-	unsigned int	countdown_eating;
-	unsigned int	countdown_diying;
-	unsigned int	countdown_sleeping;
+	long			countdown_eating;
+	long			countdown_dying;
+	long			countdown_sleeping;
 	int				is_eating;
 	int				is_sleeping;
 	int				is_thinking;
-	unsigned int	last_check;
+	long			last_check;
 	pthread_t		thread_id;
 	int				id;
 	int				n_meals;
@@ -20,19 +20,19 @@ typedef struct	s_phil
 
 typedef struct	s_table
 {
-	unsigned int	time_to_die;
-	unsigned int	time_to_sleep;
-	unsigned int	time_to_eat;
+	long			time_to_die;
+	long			time_to_sleep;
+	long			time_to_eat;
 	int				n_phils;
 	int				n_meals;
 	t_phil			*phils;
 	pthread_mutex_t	*forks;
 }				t_table;
 
-unsigned int	ft_atoi(char *str)
+long	ft_atoi(char *str)
 {
 	int				i;
-	unsigned int	res;
+	long			res;
 
 	if (!str)
 		return (0);
@@ -47,14 +47,14 @@ unsigned int	ft_atoi(char *str)
 	return (res);
 }
 
-int		ft_anyone_dead(int n_phils, t_phil *phils, unsigned int time_to_die)
+int		ft_anyone_dead(int n_phils, t_phil *phils, long time_to_die)
 {
 	int	i;
 
 	i = 0;
 	while (i < n_phils)
 	{
-		if (phils[i].countdown_diying <= 0 || phils[i].countdown_diying > time_to_die)
+		if (phils[i].countdown_dying <= 0) // || phils[i].countdown_diying > time_to_die)
 		{
 			return (i);
 		}
@@ -63,12 +63,14 @@ int		ft_anyone_dead(int n_phils, t_phil *phils, unsigned int time_to_die)
 	return (-1);
 }
 
-unsigned int	ft_diff_ms(unsigned int ms, unsigned int last_check)
+long	ft_diff_ms(unsigned int micros, long last_check)
 {
-	if (ms < last_check)
-		return (999999 - last_check + ms);
-	return (ms - last_check);
+	long ms;
 
+	ms = (long)micros;
+	if (ms < last_check)
+		return ((long)(last_check + ms - 1000000));
+	return ((long)(ms - last_check));
 }
 
 // void	update_ct(int	n_phils, t_phil *phils)
@@ -110,7 +112,7 @@ void	ft_init_phils_forks(t_table *table)
 	while (i < table->n_phils)
 	{
 		gettimeofday(&current_time, NULL);
-		table->phils[i].countdown_diying = table->time_to_die;
+		table->phils[i].countdown_dying = table->time_to_die;
 		table->phils[i].countdown_eating = 0;
 		table->phils[i].countdown_sleeping = 0;
 		table->phils[i].is_thinking = 1;
@@ -177,9 +179,9 @@ int	ft_need_to_eat(t_table *table)
 	{
 		if ((table->phils[i]).is_thinking)
 		{
-			printf("phils[%i].is_dying before update = %u\n", i, table->phils[i].countdown_diying);
-			table->phils[i].countdown_diying -= ft_diff_ms(current_time.tv_usec, table->phils[i].last_check);
-			printf("phils[%i].is_dying after update = %u\n", i, table->phils[i].countdown_diying);
+			printf("phils[%i].is_dying before update = %u\n", i, table->phils[i].countdown_dying);
+			table->phils[i].countdown_dying -= ft_diff_ms(current_time.tv_usec, table->phils[i].last_check);
+			printf("phils[%i].is_dying after update = %u\n", i, table->phils[i].countdown_dying);
 			current = i;
 			next = current + 1;
 			if (i == table->n_phils)
@@ -190,7 +192,7 @@ int	ft_need_to_eat(t_table *table)
 		else if ((table->phils[i]).is_sleeping)
 		{
 			table->phils[i].countdown_sleeping -= ft_diff_ms(current_time.tv_usec, table->phils[i].last_check);
-			table->phils[i].countdown_diying -= ft_diff_ms(current_time.tv_usec, table->phils[i].last_check);
+			table->phils[i].countdown_dying -= ft_diff_ms(current_time.tv_usec, table->phils[i].last_check);
 			if (table->phils[i].countdown_sleeping <= 0)
 			{
 				table->phils[i].countdown_sleeping = 0;
@@ -200,7 +202,7 @@ int	ft_need_to_eat(t_table *table)
 		}
 		table->phils[i].last_check = current_time.tv_usec;
 		// printf("Phil %i has still %u milliseconds before dying.\n", i,table->phils[i].countdown_diying / 1000);
-		printf("Phil %i has still %u us before dying.\n", i,table->phils[i].countdown_diying);
+		printf("Phil %i has still %u us before dying.\n", i,table->phils[i].countdown_dying);
 		i++;
 	}
 	return (-1);
@@ -226,8 +228,8 @@ void	*ft_eat(void *arg)
 		pthread_mutex_lock(&(table->forks[next]));
 		usleep(table->time_to_eat * 10);
 		printf("HO FINITO DI MANGIARE AND I AM phils[%i]\n", current);
-		printf("SONO IL PHILS[%i] E I AM STARVING: %u\n", next, table->phils[next].countdown_diying);
-		table->phils[current].countdown_diying = table->time_to_die;
+		printf("SONO IL PHILS[%i] E I AM STARVING: %u\n", next, table->phils[next].countdown_dying);
+		table->phils[current].countdown_dying = table->time_to_die;
 		table->phils[current].countdown_sleeping = table->time_to_sleep;
 		pthread_mutex_unlock(&(table->forks[current]));
 		pthread_mutex_unlock(&(table->forks[next]));
