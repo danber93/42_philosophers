@@ -19,8 +19,9 @@ void	init_philos(t_table *table)
 		table->phils[i].eat_start = 0;
 		pthread_mutex_init(&(table->phils[i].p_access), NULL);
 		table->phils[i].p_state = SLEEPING;
-		init_fork(&table->phils[i].p_fork);
+		init_fork(&table->phils[i].fork);
 		table->phils[i].table = table;
+		// pthread_create(table->phils[i].p_thread, NULL, ft_live, (void *)(table->phils[i]))
 		i++;
 	}
 }

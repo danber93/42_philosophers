@@ -1,6 +1,6 @@
 #include "philosophers.h"
 
-void	*ft_phil_live(void *arg)
+void	*ft_live(void *arg)
 {
 	t_phil	*phil;
 	t_phil	*next_phil;

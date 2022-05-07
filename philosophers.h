@@ -6,7 +6,9 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-# define N_MAX_PHILOSOPHERS 200
+# define DEATH_TOLL_MS 5
+# define WAIT_FOR_FORKS_MS 1000
+# define CHECK_EXIT_CYCLE_MS 500
 
 typedef enum	e_state
 {
@@ -31,7 +33,7 @@ typedef struct	s_phil
 	int				eat_start;
 	pthread_mutex_t	p_access;
 	t_state			p_state;
-	t_fork			p_fork;
+	t_fork			fork;
 	pthread_t		p_thread;
 	struct s_table	*table;
 }				t_phil;
@@ -56,5 +58,6 @@ int		ft_error(char *s, int error);
 int		elapsed_time(void);
 void	init_all(t_table *table);
 int		ft_parsing(t_table *table, int argc, char *argv[]);
+void	ft_display(t_phil *phil, int timestamp, char *msg);
 
 #endif
