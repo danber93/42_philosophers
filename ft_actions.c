@@ -55,7 +55,6 @@ void	ft_eat(t_phil *phil, t_phil* next)
 		"has taken a fork|has taken a fork|is eating");
 	phil->n_eat++;
 	phil->eat_start = elapsed_time();
-	// TODO: provare a mettero una riga sotto
 	pthread_mutex_unlock(&phil->p_access);
 	usleep(phil->table->time_to_eat * 1000);
 	drop_forks(phil, next);

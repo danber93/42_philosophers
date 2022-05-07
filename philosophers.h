@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+#include <stdio.h>
+
 # define DEATH_TOLL_MS 5
 # define WAIT_FOR_FORKS_MS 1000
 # define CHECK_EXIT_CYCLE_MS 500
@@ -59,5 +61,11 @@ int		elapsed_time(void);
 void	init_all(t_table *table);
 int		ft_parsing(t_table *table, int argc, char *argv[]);
 void	ft_display(t_phil *phil, int timestamp, char *msg);
+int		ft_anyone_dead(t_table *table);
+int		ft_full_belly(t_table *table);
+void	*ft_live(void *arg);
+void	ft_sleep(t_phil *phil);
+void	ft_think(t_phil *phil, t_phil *next);
+void	ft_eat(t_phil *phil, t_phil* next);
 
 #endif

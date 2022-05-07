@@ -21,7 +21,7 @@ void	init_philos(t_table *table)
 		table->phils[i].p_state = SLEEPING;
 		init_fork(&table->phils[i].fork);
 		table->phils[i].table = table;
-		// pthread_create(table->phils[i].p_thread, NULL, ft_live, (void *)(table->phils[i]))
+		pthread_create(&table->phils[i].p_thread, NULL, ft_live, (void *)(table->phils + i));
 		i++;
 	}
 }
@@ -30,12 +30,12 @@ void	init_mutex(t_table *table)
 {
 	pthread_mutex_init(&table->print_access, NULL);
 	pthread_mutex_init(&table->start_access, NULL);
-	pthread_mutex_init(&table->start_access, NULL);
+	pthread_mutex_lock(&table->start_access);
 }
 
 void	init_all(t_table *table)
 {
 	init_mutex(table);
 	init_philos(table);
-	pthread_mutex_unlock(&(table->start_access));
+	pthread_mutex_unlock(&table->start_access);
 }
