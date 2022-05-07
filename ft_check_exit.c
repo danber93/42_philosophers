@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_check_exit.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/07 16:29:40 by dbertill          #+#    #+#             */
+/*   Updated: 2022/05/07 16:29:40 by dbertill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-int		ft_anyone_dead(t_table *table)
+int	ft_anyone_dead(t_table *table)
 {
 	int	i;
 	int	runtime;
@@ -10,7 +22,8 @@ int		ft_anyone_dead(t_table *table)
 	{
 		pthread_mutex_lock(&(table->phils[i].p_access));
 		runtime = elapsed_time();
-		if (runtime - table->phils[i].eat_start > table->time_to_die + DEATH_TOLL_MS)
+		if (runtime - table->phils[i].eat_start
+			> table->time_to_die + DEATH_TOLL_MS)
 		{
 			ft_display(&table->phils[i], runtime, "died");
 			table->state = FINISHED;

@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/07 16:31:51 by dbertill          #+#    #+#             */
+/*   Updated: 2022/05/07 16:31:58 by dbertill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 int	ft_atoi(const char *str)
 {
-	int result;
-	int sign;
+	int	result;
+	int	sign;
 
 	sign = 1;
 	result = 0;
 	while (*str && (*str == '\r' || *str == '\n' || *str == '\t'
-	|| *str == '\v' || *str == '\f' || *str == ' '))
+			|| *str == '\v' || *str == '\f' || *str == ' '))
 		str++;
 	if (*str == '-')
 	{
@@ -27,7 +39,7 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
-void			ft_putnbr(int nb)
+void	ft_putnbr(int nb)
 {
 	char	c;
 
@@ -37,13 +49,13 @@ void			ft_putnbr(int nb)
 	write(1, &c, 1);
 }
 
-void			ft_putstr(int fd, char *str)
+void	ft_putstr(int fd, char *str)
 {
 	while (*str)
 		write(fd, str++, 1);
 }
 
-int				ft_error(char *s, int error)
+int	ft_error(char *s, int error)
 {
 	ft_putstr(2, s);
 	ft_putstr(2, "\n");
@@ -52,7 +64,7 @@ int				ft_error(char *s, int error)
 
 void	ft_display(t_phil *phil, int timestamp, char *msg)
 {
-	static	int	last_timestamp = 0;
+	static int	last_timestamp = 0;
 
 	pthread_mutex_lock(&(phil->table->print_access));
 	if (last_timestamp > timestamp)

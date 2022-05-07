@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_actions.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/07 16:28:13 by dbertill          #+#    #+#             */
+/*   Updated: 2022/05/07 16:28:45 by dbertill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 int	take_forks(t_phil *phil, t_phil *next)
@@ -6,7 +18,7 @@ int	take_forks(t_phil *phil, t_phil *next)
 
 	ready = 0;
 	if (!next)
-		return ready;
+		return (ready);
 	pthread_mutex_lock(&phil->fork.f_access);
 	pthread_mutex_lock(&next->fork.f_access);
 	if ((phil->fork.owner != phil->id && !phil->fork.used)
@@ -48,7 +60,7 @@ void	ft_think(t_phil *phil, t_phil *next)
 	phil->p_state = EATING;
 }
 
-void	ft_eat(t_phil *phil, t_phil* next)
+void	ft_eat(t_phil *phil, t_phil *next)
 {
 	pthread_mutex_lock(&phil->p_access);
 	ft_display(phil, elapsed_time(),

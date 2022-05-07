@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/07 16:35:51 by dbertill          #+#    #+#             */
+/*   Updated: 2022/05/07 16:35:51 by dbertill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	*ft_live(void *arg)
@@ -24,7 +36,7 @@ void	*ft_live(void *arg)
 
 int	main(int argc, char *argv[])
 {
-	t_table *table;
+	t_table	*table;
 	int		parse_input;
 	int		i;
 
@@ -37,12 +49,12 @@ int	main(int argc, char *argv[])
 	if (!table->phils)
 		return (ft_error("Error while allocating phils", 0));
 	table->state = RUNNING;
-	init_all(table);
+	ft_init_all(table);
 	while (!ft_anyone_dead(table) && !ft_full_belly(table))
 		usleep(CHECK_EXIT_CYCLE_MS);
 	i = 0;
 	while (i < table->n_phils)
-			pthread_join(table->phils[i++].p_thread, NULL);
+		pthread_join(table->phils[i++].p_thread, NULL);
 	free(table->phils);
 	return (0);
 }
