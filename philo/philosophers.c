@@ -6,7 +6,7 @@
 /*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:35:51 by dbertill          #+#    #+#             */
-/*   Updated: 2022/05/07 17:32:55 by dbertill         ###   ########.fr       */
+/*   Updated: 2022/05/07 18:25:55 by dbertill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ void	*ft_live(void *arg)
 	t_phil	*next_phil;
 
 	phil = (t_phil *)arg;
+	if (phil->table->n_phils == 1)
+	{
+		ft_display(phil, phil->table->time_to_die, "died");
+		phil->table->state = FINISHED;
+		return (NULL);
+	}
 	if (phil->id == phil->table->n_phils - 1)
 		next_phil = &(phil->table->phils[0]);
 	else
