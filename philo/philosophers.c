@@ -6,7 +6,7 @@
 /*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:35:51 by dbertill          #+#    #+#             */
-/*   Updated: 2022/05/07 16:35:51 by dbertill         ###   ########.fr       */
+/*   Updated: 2022/05/07 16:50:42 by dbertill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char *argv[])
 		usleep(CHECK_EXIT_CYCLE_MS);
 	i = 0;
 	while (i < table->n_phils)
-		pthread_join(table->phils[i++].p_thread, NULL);
+		pthread_join(table->phils[i++].thread, NULL);
 	free(table->phils);
 	return (0);
 }

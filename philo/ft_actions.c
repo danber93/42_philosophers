@@ -6,7 +6,7 @@
 /*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:28:13 by dbertill          #+#    #+#             */
-/*   Updated: 2022/05/07 16:28:45 by dbertill         ###   ########.fr       */
+/*   Updated: 2022/05/07 16:51:59 by dbertill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	drop_forks(t_phil *phil, t_phil *next)
 
 void	ft_sleep(t_phil *phil)
 {
-	ft_display(phil, elapsed_time(), "is sleeping.");
+	ft_display(phil, elapsed_time(), "is sleeping");
 	usleep(phil->table->time_to_sleep * 1000);
 	phil->p_state = THINKING;
 }
@@ -62,12 +62,12 @@ void	ft_think(t_phil *phil, t_phil *next)
 
 void	ft_eat(t_phil *phil, t_phil *next)
 {
-	pthread_mutex_lock(&phil->p_access);
+	pthread_mutex_lock(&phil->access);
 	ft_display(phil, elapsed_time(),
 		"has taken a fork|has taken a fork|is eating");
 	phil->n_eat++;
 	phil->eat_start = elapsed_time();
-	pthread_mutex_unlock(&phil->p_access);
+	pthread_mutex_unlock(&phil->access);
 	usleep(phil->table->time_to_eat * 1000);
 	drop_forks(phil, next);
 	phil->p_state = SLEEPING;

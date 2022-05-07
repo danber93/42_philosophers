@@ -6,7 +6,7 @@
 /*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:27:57 by dbertill          #+#    #+#             */
-/*   Updated: 2022/05/07 16:33:04 by dbertill         ###   ########.fr       */
+/*   Updated: 2022/05/07 16:50:42 by dbertill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ typedef struct s_phil
 	int				id;
 	int				n_eat;
 	int				eat_start;
-	pthread_mutex_t	p_access;
+	pthread_mutex_t	access;
 	t_state			p_state;
 	t_fork			fork;
-	pthread_t		p_thread;
+	pthread_t		thread;
 	struct s_table	*table;
 }			t_phil;
 
