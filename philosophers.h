@@ -1,80 +1,60 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-#include <stdio.h>
 #include <pthread.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/time.h>
 
-typedef struct s_table
+# define N_MAX_PHILOSOPHERS 200
+
+typedef enum	e_state
 {
-	int n_philosophers;
-	int n_forks;
-	int *forks;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
-	int n_meals;
-}               t_table;
+	EATING,
+	SLEEPING,
+	THINKING,
+	RUNNING,
+	FINISHED
+}				t_state;
 
-/*
-ciclo
-	p0 mangia (fh, fa)
-		fa
-	p1 aspetta
-		fb
-	p2 mangia (fb, fc)
-		fc
-	p3 aspetta
-		fd
-	p4 mangia (fd, fe)
-		fe
-	p5 aspetta
-		ff
-	p6 mangia (ff, fg)
-		fg
-	p7 aspetta (offset + time_to_eat < time_to_die)
-		fh
-
-ciclo
-	p0 mangia (fe, fa)
-		fa
-	p1 aspetta
-		fb
-	p2 mangia (fb, fc)
-		fc
-	p3 aspetta
-		fd
-	p4 aspetta (offset + 2 * time_to_eat + [time_to_sleep]< time_to_die)
-		fe
-
-	usleep()
-
-	controlla chi sta morendo di fame
-		controllo se le sue forchette son lockate
-		fallo mangiare
-
-
-*/
-
-
-/*
-UPDATE
-	ciclo
-		diminuisci tutti i countdown
-		corrent - last_meal_time > time_to_eat + time_to_sleep allora puoi mangiare
-		current - last_meal_time > time_to_die E' MORTO
-*/
-typedef struct s_philosopher
+typedef struct 	s_fork
 {
-	pthread_t phil_threah_id;
-	int	phil_id;
-	unsigned int countdown_starving;
-	unsigned int last_meal_time; //il millisecondo in cui ha smesso di mangiare
-	unsigned int last_check; // l'ultimo "time" in cui ho controllato nel ciclo UPDATE
-	unsigned int countdown_sleeping;
-	int is_eating;
-	int is_sleeping;
-	int is_thinking;
-	int n_eaten;
-}              t_philosopher;
+	int				owner;
+	int				used;
+	pthread_mutex_t	f_access;
+}				t_fork;
+
+typedef struct	s_phil
+{
+	int				id;
+	int				n_eat;
+	int				eat_start;
+	pthread_mutex_t	p_access;
+	t_state			p_state;
+	t_fork			p_fork;
+	pthread_t		p_thread;
+	struct s_table	*table;
+}				t_phil;
+
+typedef	struct 	s_table
+{
+	int				n_phils;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				n_meals;
+	t_state			state;
+	pthread_mutex_t	print_access;
+	pthread_mutex_t	start_access;
+	t_phil			*phils;
+}				t_table;
+
+int		ft_atoi(const char *str);
+void	ft_putnbr(int nb);
+void	ft_putstr(int fd, char *str);
+int		ft_error(char *s, int error);
+int		elapsed_time(void);
+void	init_all(t_table *table);
+int		ft_parsing(t_table *table, int argc, char *argv[]);
 
 #endif
