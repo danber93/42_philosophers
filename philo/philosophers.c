@@ -6,7 +6,7 @@
 /*   By: dbertill <dbertill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:35:51 by dbertill          #+#    #+#             */
-/*   Updated: 2022/05/07 16:50:42 by dbertill         ###   ########.fr       */
+/*   Updated: 2022/05/07 17:32:55 by dbertill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ int	main(int argc, char *argv[])
 	while (i < table->n_phils)
 		pthread_join(table->phils[i++].thread, NULL);
 	free(table->phils);
+	free(table);
 	return (0);
 }
